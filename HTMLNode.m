@@ -53,7 +53,6 @@
     array = [[NSMutableArray alloc] initWithArray:[self componentsSeparatedByCharactersInSet:characterSet]];
     [array removeObject:@""]; // remove all occurrences of empty string items from the array
     NSString *result = [array componentsJoinedByString:separator];
-    [array release];
     return result;
 }
 
@@ -97,7 +96,7 @@ void childrenOfTag(const xmlChar * tagName, xmlNode * node, NSMutableArray * arr
 // convenience initializer
 + (HTMLNode *)nodeWithXMLNode:(xmlNode *)xmlNode
 {
-	return [[[HTMLNode alloc] initWithXMLNode:xmlNode] autorelease];	
+	return [[HTMLNode alloc] initWithXMLNode:xmlNode];	
 }
 
 #pragma mark - init method
@@ -114,7 +113,6 @@ void childrenOfTag(const xmlChar * tagName, xmlNode * node, NSMutableArray * arr
 
 - (void)dealloc {
     self.xpathError = nil;
-    [super dealloc];
 }
 
 #pragma mark - navigating methods
@@ -158,7 +156,6 @@ void childrenOfTag(const xmlChar * tagName, xmlNode * node, NSMutableArray * arr
 	for (currentNode = xmlNode_->children; currentNode; currentNode = currentNode->next) {	
 		HTMLNode *node = [[HTMLNode alloc] initWithXMLNode:currentNode];
 		[array addObject:node];
-        [node release];
 	}
 	
 	return array;
@@ -244,11 +241,9 @@ void childrenOfTag(const xmlChar * tagName, xmlNode * node, NSMutableArray * arr
     if (identifier) {
         NSLocale *locale = [[NSLocale alloc] initWithLocaleIdentifier:identifier];
         [numberFormatter setLocale:locale];
-        [locale release];
     }
     [numberFormatter setNumberStyle:NSNumberFormatterDecimalStyle];
     NSNumber *number = [numberFormatter numberFromString:string];
-    [numberFormatter release];
     return [number doubleValue];
 }
 
@@ -270,7 +265,6 @@ void childrenOfTag(const xmlChar * tagName, xmlNode * node, NSMutableArray * arr
     [dateFormatter setDateFormat:dateFormat];
     [dateFormatter setTimeZone:timeZone];
     formattedDate = [dateFormatter dateFromString:string];
-    [dateFormatter release];
     
     return formattedDate;
 }
@@ -327,9 +321,9 @@ void childrenOfTag(const xmlChar * tagName, xmlNode * node, NSMutableArray * arr
         if (buffer) {
             int result = xmlNodeDump(buffer, NULL, xmlNode_, 0, 0);
             if (result > -1) {
-                string = [[[NSString alloc] initWithBytes:(xmlBufferContent(buffer))
+                string = [[NSString alloc] initWithBytes:(xmlBufferContent(buffer))
                                                    length:(xmlBufferLength(buffer))
-                                                 encoding:NSUTF8StringEncoding] autorelease];
+                                                 encoding:NSUTF8StringEncoding];
             }
             xmlBufferFree(buffer);
         }
@@ -440,9 +434,9 @@ NSString * textContent(xmlNode *node)
     xmlOutputBufferFlush(outputBuffer);
     
     if (xmlBuffer->content) {
-        result = [[[NSString alloc] initWithBytes:(const void *)xmlBufferContent(xmlBuffer) 
+        result = [[NSString alloc] initWithBytes:(const void *)xmlBufferContent(xmlBuffer) 
                                            length:xmlBufferLength(xmlBuffer) 
-                                         encoding:NSUTF8StringEncoding] autorelease];
+                                         encoding:NSUTF8StringEncoding];
     }
     
     xmlOutputBufferClose(outputBuffer);
@@ -517,7 +511,6 @@ void childrenWithAttributeValueMatches(const xmlChar * attrName, const xmlChar *
                 if (child && xmlStrEqual(child->content, attrValue)) {
                     HTMLNode *matchingNode = [[HTMLNode alloc] initWithXMLNode:currentNode];
                     [array addObject:matchingNode];
-                    [matchingNode release];
                     break;
                 }
             }
@@ -542,7 +535,6 @@ void childrenWithAttributeValueContains(const xmlChar * attrName, const xmlChar 
                 if (child && xmlStrstr(child->content, attrValue) != NULL) {
                     HTMLNode *matchingNode = [[HTMLNode alloc] initWithXMLNode:currentNode];
                     [array addObject:matchingNode];
-                    [matchingNode release];
                     break;
                 }
             }
@@ -728,7 +720,6 @@ void childrenOfTagValueMatches(const xmlChar * tagName, const xmlChar * value, x
             if (childName && xmlStrEqual(childName, value)) {
                 HTMLNode * matchingNode = [[HTMLNode alloc] initWithXMLNode:currentNode];
                 [array addObject:matchingNode];
-                [matchingNode release];
             }
         }
         if (recursive) childrenOfTagValueMatches(tagName, value, currentNode->children, array, recursive);
@@ -749,7 +740,6 @@ void childrenOfTagValueContains(const xmlChar * tagName, const xmlChar * value, 
             if (childName && xmlStrstr(childName, value) != NULL) {
                 HTMLNode * matchingNode = [[HTMLNode alloc] initWithXMLNode:currentNode];
                 [array addObject:matchingNode];
-                [matchingNode release];
             }
         }
         if (recursive) childrenOfTagValueContains(tagName, value, currentNode->children, array, recursive);
@@ -827,7 +817,6 @@ void childrenOfTag(const xmlChar * tagName, xmlNode * node, NSMutableArray * arr
         if (currentNode->name && xmlStrEqual(currentNode->name, tagName)) {
             HTMLNode * matchingNode = [[HTMLNode alloc] initWithXMLNode:currentNode];
             [array addObject:matchingNode];
-            [matchingNode release];
         }
         
         if (recursive) childrenOfTag(tagName, currentNode->children, array, recursive);

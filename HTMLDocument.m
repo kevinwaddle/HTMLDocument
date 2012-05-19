@@ -43,32 +43,32 @@
 
 + (HTMLDocument *)documentWithData:(NSData *)data encoding:(NSStringEncoding )encoding error:(NSError **)error
 {
-    return [[[HTMLDocument alloc] initWithData:data encoding:encoding error:error] autorelease];
+    return [[HTMLDocument alloc] initWithData:data encoding:encoding error:error];
 }
 
 + (HTMLDocument *)documentWithData:(NSData *)data error:(NSError **)error
 {
-    return [[[HTMLDocument alloc] initWithData:data error:error] autorelease];
+    return [[HTMLDocument alloc] initWithData:data error:error];
 }
 
 + (HTMLDocument *)documentWithContentsOfURL:(NSURL *)url encoding:(NSStringEncoding )encoding error:(NSError **)error
 {
-     return [[[HTMLDocument alloc] initWithContentsOfURL:url encoding:encoding error:error] autorelease];
+     return [[HTMLDocument alloc] initWithContentsOfURL:url encoding:encoding error:error];
 }
 
 + (HTMLDocument *)documentWithContentsOfURL:(NSURL *)url error:(NSError **)error
 {
-    return [[[HTMLDocument alloc] initWithContentsOfURL:url error:error] autorelease];
+    return [[HTMLDocument alloc] initWithContentsOfURL:url error:error];
 }
 
 + (HTMLDocument *)documentWithHTMLString:(NSString *)string encoding:(NSStringEncoding )encoding error:(NSError **)error
 {
-     return [[[HTMLDocument alloc] initWithHTMLString:string encoding:encoding error:error] autorelease];
+     return [[HTMLDocument alloc] initWithHTMLString:string encoding:encoding error:error];
 }
 
 + (HTMLDocument *)documentWithHTMLString:(NSString *)string error:(NSError **)error
 {
-    return [[[HTMLDocument alloc] initWithHTMLString:string error:error] autorelease];
+    return [[HTMLDocument alloc] initWithHTMLString:string error:error];
 }
 
 #pragma mark - instance init methods
@@ -104,7 +104,6 @@
             if (error) 
                 *error = [self errorForCode:errorCode];
             
-            [self release];
             return nil;
         }
     }
@@ -145,9 +144,7 @@
 
 - (void)dealloc
 {
-    [rootNode release];
     xmlFreeDoc(htmlDoc_);
-	[super dealloc];
 }
 
 #pragma mark - frequently used nodes

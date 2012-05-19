@@ -90,7 +90,6 @@ static id performXPathQuery(xmlNode * node, NSString * query, BOOL returnSingleN
                     for (int i = 0; i < nodes->nodeNr; i++) {
                         HTMLNode *matchedNode = [[HTMLNode alloc] initWithXMLNode:nodes->nodeTab[i]];
                         [result addObject:matchedNode];
-                        [matchedNode release];
                     } 
                 }
             }
